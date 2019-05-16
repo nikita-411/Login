@@ -1,1 +1,1 @@
-This is a basic login form withnregister and login pages
+This is a basic login form with register and login pages
