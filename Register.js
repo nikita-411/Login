@@ -46,7 +46,7 @@ class Register extends Component {
 	"first_name": this.state.first_name,
 	"last_name": this.state.last_name,
 	"email": this.state.email,
-	"transaction_id":this.state.transaction_id
+	"transaction_id": this.state.transaction_id
 
 	})
     .then(function (response) {
