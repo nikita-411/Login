@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -8,7 +8,7 @@ import MenuItem from 'material-ui/MenuItem';
 import axios from 'axios';
 import UploadPage from './UploadPage';
 
-var apiBaseUrl = "http://localhost:4000/api/";
+var apiBaseUrl = "https://api.staging.goplannr.com/v2/user/authorization/generate";
 class Login extends Component {
   constructor(props){
     super(props);
@@ -103,9 +103,13 @@ class Login extends Component {
 	    "password":this.state.password,
       "role":this.state.loginRole
     }
-    axios.post(apiBaseUrl+'login', payload)
+    axios.post(apiBaseUrl,{
+   "phone_no": this.state.phoneno,
+   "Password": this.state.password
+}
+ )
    .then(function (response) {
-     console.log(response);
+     alert("Login Successfully");
      if(response.data.code == 200){
        console.log("Login successful");
        var uploadScreen=[];

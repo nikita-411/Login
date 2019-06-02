@@ -15,18 +15,19 @@ class Register extends Component {
       password:'',
       phoneno:'',
       pincode:'',
-      panno:''
+      panno:'',
+	  transaction_id:''
     }
   }
   componentWillReceiveProps(nextProps){
     console.log("nextProps",nextProps);
   }
-  handleClick(event,role){
-    var apiBaseUrl = "http://localhost:4000/api/";
+  handleClick(event,role) {
+    var apiBaseUrl = "https://api.staging.goplannr.com/v2/user/register";
     // console.log("values in register handler",role);
     var self = this;
     //To be done:check for empty values before hitting submit
-    if(this.state.first_name.length>0 && this.state.last_name.length>0 && this.state.email.length>0 && this.state.password.length>0 && this.state.phoneno.length>0 && this.state.pincode.length>0 && this.state.panno.length>0){
+    if(this.state.phoneno.length>0 && this.state.last_name.length>0 && this.state.email.length>0 && this.state.password.length>0 && this.state.phoneno.length>0 && this.state.pincode.length>0 && this.state.panno.length>0){
       var payload={
       "first_name": this.state.first_name,
       "last_name":this.state.last_name,
@@ -35,13 +36,23 @@ class Register extends Component {
       "userid": this.state.phoneno,
       "pincode":this.state.pincode,
       "panno":this.state.panno,
-      "role":role
+      "role":role	
       }
-      axios.post(apiBaseUrl+'/register', payload)
-     .then(function (response) {
-       console.log(response);
+      axios.post(apiBaseUrl, {
+  "pincode": this.state.pincode,
+	"pan_no":this.state.panno,
+	"phone_no": this.state.phoneno,
+	"password": this.state.password,
+	"first_name": this.state.first_name,
+	"last_name": this.state.last_name,
+	"email": this.state.email,
+	"transaction_id":this.state.transaction_id
+
+	})
+    .then(function (response) {
+       alert("Register Success");
        if(response.data.code === 200){
-        //  console.log("registration successful");
+         //console.log("registration successful");
          var loginscreen=[];
          loginscreen.push(<Login parentContext={this} appContext={self.props.appContext} role={role}/>);
          var loginmessage = "Not Registered yet.Go to registration";
@@ -56,14 +67,13 @@ class Register extends Component {
        }
      })
      .catch(function (error) {
-       console.log(error);
+       alert(error);
      });
     }
     else{
       alert("Input field value is missing");
     }
-
-  }
+  };
   render() {
     // console.log("props",this.props);
     var userhintText,userLabel;
@@ -123,6 +133,12 @@ class Register extends Component {
              hintText="Enter your PAN Number"
              floatingLabelText="PAN Number"
              onChange = {(event,newValue) => this.setState({panno:newValue})}
+             />
+           <br/>
+		   <TextField
+             hintText="Enter your Transaction id"
+             floatingLabelText="Transaction ID"
+             onChange = {(event,newValue) => this.setState({transaction_id:newValue})}
              />
            <br/>
            <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event,this.props.role)}/>
